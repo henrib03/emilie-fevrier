@@ -1,158 +1,140 @@
-#proposition Emilie#
+#Surprise Emilie#
 
 import streamlit as st
-from datetime import date
-
+import time
 
 # --- Configuration de la page ---
-st.set_page_config(page_title="Petite Enquête...", page_icon="🐾")
+st.set_page_config(page_title="Pour Emilie ", page_icon="🌹")
 
-# --- CSS  ---
+# --- CSS pour le style (Rose & Romantique) ---
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    .stTextInput > label {font-weight: bold;}
+    
+    /* Style des boutons */
+    .stButton>button {
+        width: 100%;
+        border-radius: 25px;
+        background-color: #FF4B4B;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #D42B2B;
+        transform: scale(1.02);
+    }
+    
+    /* Style du texte */
+    h1, h2, h3 {
+        color: #333;
+        text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- Gestion des étapes ---
+# --- Gestion de l'histoire (État) ---
 if 'step' not in st.session_state:
     st.session_state.step = 1
 
-# --- BARRE DE PROGRESSION  ---
-progress = (st.session_state.step - 1) / 4
-if st.session_state.step < 5:
-    st.progress(progress)
-
 # --- TITRE ---
-st.title("Vu que tu es une grande joueuse !")
-if st.session_state.step < 5:
-    st.write(f"Niveau {st.session_state.step}/4 avant de débloquer la question finale...")
+st.title("Une surprise pour toi... 💌")
 
 # ---------------------------------------------------------
-# ÉTAPE 1 : LA BOUGIE
+# ÉTAPE 1 : VOLTAIRE DANS LA BIBLIOTHÈQUE
 # ---------------------------------------------------------
 if st.session_state.step == 1:
-    st.subheader("Énigme N°1 ")
-    st.info("Je suis grande quand je suis jeune, et petite quand je suis vieille. Qui suis-je ?")
+    st.write("---")
+    st.subheader("1 : La découverte")
+    st.write("Fin de journée. Voltaire cherche sa balle...")
     
-    reponse1 = st.text_input("Ta réponse :", key="r1")
+    st.info("🐶 *Snif snif...* Voltaire a trouvé quelque chose de bizarre coincé sous ton canapé !")
+    st.write("Ça ressemble à une petite enveloppe...")
     
-    if st.button("Valider"):
-        if any(x in reponse1.lower() for x in ["bougie", "une bougie", "la bougie"]):
-            st.success("Correct ! Ça commence bien.")
-            st.session_state.step = 2
-            st.rerun()
-        else:
-            st.error("Non... Je fonds souvent. Essaie encore !")
+    st.write("") # Espace vide
+    
+    if st.button("Voir ce que c'est ^^"):
+        st.session_state.step = 2
+        st.rerun()
 
 # ---------------------------------------------------------
-# ÉTAPE 2 : LE SECRET
+# ÉTAPE 2 : LE MESSAGE DOUX
 # ---------------------------------------------------------
 elif st.session_state.step == 2:
-    st.subheader("Énigme N°2 ")
-    st.info("Plus j'ai de gardiens, moins je suis en sécurité. Moins j'en ai, plus je suis caché. Qui suis-je ?")
+    st.write("---")
+    st.subheader("2 : Le message")
     
-    reponse2 = st.text_input("Ta réponse :", key="r2")
+    st.success("C'est une pensée pour toi ahah")
     
-    if st.button("Valider"):
-        if any(x in reponse2.lower() for x in ["secret", "un secret", "le secret"]):
-            st.success("Pas mal mais ce n'est pas la fin de ta peine !")
-            st.session_state.step = 3
-            st.rerun()
-        else:
-            st.error("Ce n'est pas ça mais je pense que tu es capable d'en garder.")
+    st.markdown("""
+    <div style="text-align: center; font-style: italic; margin-bottom: 20px;">
+        "Même la plus brillante des juristes a besoin d'une pause douceur."
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.write("Voltaire remue la queue, il a préparé une dernière surprise avec moi.")
+    st.write("Es-tu prête ?")
+    
+    st.write("")
+    
+    if st.button("Oui, montre-moi ! 🐾"):
+        st.session_state.step = 3
+        st.rerun()
 
 # ---------------------------------------------------------
-# ÉTAPE 3 : VOLTAIRE (LE CHIEN)
+# ÉTAPE 3 : LE JARDIN DE TULIPES (FINALE)
 # ---------------------------------------------------------
 elif st.session_state.step == 3:
-    st.subheader("Énigme N°3 🐾")
-    # Référence au philosophe + couleur (suisse blanc) + bêtises
-    st.info("""
-    Je porte le nom d'un célèbre philosophe des Lumières.
-    Mon manteau est blanc comme la neige, mais mes pattes laissent parfois des traces de bêtises...
-    Qui suis-je ?
-    """)
+    st.write("---")
+    st.subheader("3 : Ton Jardin")
     
-    reponse3 = st.text_input("Ta réponse :", key="r3")
+    st.write("Comme je ne peux pas être là pour te les offrir en vrai aujourd'hui...")
+    st.write("**On a fait pousser ça pour toi (garanti sans bêtises du mimi).**")
     
-    if st.button("Valider"):
-        # On accepte "Voltaire", "voltaire", "mon chien"
-        mots_cles_voltaire = ["voltaire", " mon chien", "Voltaire", "berger suisse"]
-        if any(x in reponse3.lower() for x in mots_cles_voltaire):
-            st.success("Wouf ! C'est la bonne réponse 🐶")
-            st.balloons() # Des ballons pour Voltaire !
-            st.session_state.step = 4
-            st.rerun()
-        else:
-            st.error("Indice : Je suis très mignon, suisse et blanc.")
-
-# ---------------------------------------------------------
-# ÉTAPE 4 : LE DROIT (BUSINESS)
-# ---------------------------------------------------------
-elif st.session_state.step == 4:
-    st.subheader("Énigme N°4 ")
-    # Référence aux codes, contrats et entreprises
-    st.info("""
-    Je suis le berceau de l'art oratoire.
-    Avec moi tout fonctionne mais sans moi tout s'écroule 
-    J'ai la faculté de te faire chouiner
-    Quel est ce domaine ?
-    """)
-    
-    reponse4 = st.text_input("Ta réponse :", key="r4")
-    
-    if st.button("Valider"):
-        mots_cles_droit = ["droit", "law", "avocat", "juriste", "affaire"]
-        if any(x in reponse4.lower() for x in mots_cles_droit):
-            st.success("je n'en attendais pas moins! Bravo.")
-            st.session_state.step = 5
-            st.rerun()
-        else:
-            st.error("Indice : Dalloz est trop présent.")
-
-# ---------------------------------------------------------
-# ÉTAPE 5 : LE CALENDRIER FINAL
-# ---------------------------------------------------------
-elif st.session_state.step == 5:
-    st.markdown("---")
-    st.header("✨ Félicitations !")
-    
-    st.write("Tu as résolu toutes les énigmes (et Voltaire est fier de toi).")
-    st.write("Dis-moi quand es tu disponible ^^ ?")
-    
-    # Création de la liste des dates du 14 au 27 février
-    dates_dispo = [f"{i} Février" for i in range(14, 28)]
-    
-    choix = st.multiselect(
-        "Sélectionne tes dates possibles ici :",
-        dates_dispo
-    )
-    
-    if choix:
-        st.success(f"Noté pour : {', '.join(choix)} !")
+    # Bouton pour lancer l'animation
+    if st.button("Recevoir mes fleurs 🌷"):
         
-        # --- CONFIGURATION EMAIL ---
-        mon_email = "hbardonnaut@gmail.com"  # <--- METS TON EMAIL ICI
-        sujet = "Disponibilités Février "
-        corps = f"Diantre ! J'ai réussi le quiz. Je suis dispo les : {', '.join(choix)}. A très vite !"
+        # 1. Animation : Ballons
+        st.balloons()
         
-        mailto_link = f"mailto:{mon_email}?subject={sujet}&body={corps}"
+        # 2. Animation : Texte qui change
+        status_text = st.empty()
+        status_text.write("🌱 Plantation des graines...")
+        time.sleep(1)
+        status_text.write("🌧️ Un peu d'eau...")
+        time.sleep(1)
+        status_text.write("☀️ Un peu de soleil...")
+        time.sleep(1)
+        status_text.empty()
         
-        st.markdown(f"""
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="{mailto_link}" target="_blank" style="
-                text-decoration:none; 
-                background-color:#FF4B4B; 
-                color:white; 
-                padding:12px 25px; 
-                border-radius:25px; 
-                font-size: 18px;
-                font-weight:bold;
-                box-shadow: 0px 4px 6px rgba(0,0,0,0.1);">
-                Envoyer ma réponse
-            </a>
+        # 3. Animation : Les fleurs poussent
+        jardin_container = st.container()
+        fleurs_str = ""
+        placeholder = st.empty()
+        
+        # On fait apparaître 12 tulipes
+        for i in range(12):
+            fleurs_str += "🌷 "
+            # On centre les fleurs avec du Markdown
+            placeholder.markdown(f"<h1 style='text-align: center;'>{fleurs_str}</h1>", unsafe_allow_html=True)
+            time.sleep(0.4)
+            
+        # 4. Message Final
+        st.markdown("---")
+        st.markdown("""
+        <div style="background-color: #ffe6e6; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #ffcccc;">
+            <h2 style="color: #d63384;">Joyeuse Saint-Valentin Émilie ! </h2>
+            <p>Passe une bonne soirée !! .</p>
         </div>
         """, unsafe_allow_html=True)
+        
+        # (Plus de mail ici, ça s'arrête sur le joli message)
+
+
+
+
+
